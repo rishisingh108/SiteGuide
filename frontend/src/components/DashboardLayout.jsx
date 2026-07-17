@@ -1,27 +1,61 @@
-import { useState } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
-import { LayoutDashboard, FolderKanban, Calculator, CalendarClock, Bot, Settings, Bell, Search, Menu, Map } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, FolderKanban, Calculator, CalendarClock, Bot, Settings, Bell, Search, Menu, Map, LogOut } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const SidebarItem = ({ icon: Icon, label, to }) => (
   <NavLink
     to={to}
     end={to === '/dashboard'}
     className={({ isActive }) =>
-      `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+      `group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:translate-x-1 ${
         isActive 
         ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
         : 'text-gray-500 hover:bg-gray-100/50 hover:text-blue-600'
       }`
     }
   >
-    <Icon className="w-5 h-5" />
+    <motion.span
+      whileHover={{ scale: 1.15, rotate: -6 }}
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+      className="inline-flex"
+    >
+      <Icon className="w-5 h-5" />
+    </motion.span>
     <span className="font-medium">{label}</span>
   </NavLink>
 );
 
+function getInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  const initials = parts.length > 1
+    ? parts[0][0] + parts[parts.length - 1][0]
+    : parts[0].slice(0, 2);
+  return initials.toUpperCase();
+}
+
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div className="flex h-screen bg-[#F8FAFC]">
@@ -73,12 +107,47 @@ export default function DashboardLayout() {
            </div>
            
            <div className="flex items-center gap-4">
-             <button className="relative p-2 text-gray-400 hover:text-blue-600 transition-colors">
+             <motion.button
+               whileHover={{ scale: 1.1 }}
+               whileTap={{ scale: 0.95 }}
+               className="relative p-2 text-gray-400 hover:text-blue-600 transition-colors"
+             >
                <Bell className="w-5 h-5" />
                <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-             </button>
-             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400 shadow-md flex items-center justify-center text-white font-bold cursor-pointer hover:scale-105 transition-transform">
-               US
+             </motion.button>
+
+             <div className="relative" ref={menuRef}>
+               <motion.button
+                 whileHover={{ scale: 1.08, rotate: 3 }}
+                 whileTap={{ scale: 0.95 }}
+                 onClick={() => setMenuOpen((o) => !o)}
+                 className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400 shadow-md flex items-center justify-center text-white font-bold cursor-pointer text-sm"
+               >
+                 {getInitials(user?.name)}
+               </motion.button>
+
+               <AnimatePresence>
+                 {menuOpen && (
+                   <motion.div
+                     initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                     animate={{ opacity: 1, y: 0, scale: 1 }}
+                     exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                     transition={{ duration: 0.15 }}
+                     className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50"
+                   >
+                     <div className="px-4 py-3 border-b border-gray-50">
+                       <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'User'}</p>
+                       <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                     </div>
+                     <button
+                       onClick={handleLogout}
+                       className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                     >
+                       <LogOut className="w-4 h-4" /> Log out
+                     </button>
+                   </motion.div>
+                 )}
+               </AnimatePresence>
              </div>
            </div>
         </header>

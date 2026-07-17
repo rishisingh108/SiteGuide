@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 const { computeCriticalPath, generateRisks } = require('../utils/scheduleEngine');
+const { requireApiKey } = require('../middleware/auth');
 
 /**
  * GET /api/scheduler/:projectId
@@ -37,7 +38,7 @@ router.get('/:projectId', async (req, res, next) => {
  * POST /api/scheduler/compute
  * Compute CPM for arbitrary task list (no project needed — for live preview)
  */
-router.post('/compute', async (req, res, next) => {
+router.post('/compute', requireApiKey, async (req, res, next) => {
   try {
     const { tasks, startDate } = req.body;
     if (!tasks || !Array.isArray(tasks)) {

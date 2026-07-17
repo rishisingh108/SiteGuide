@@ -3,7 +3,6 @@ import MapView from './map/MapView';
 import InfoPanel from './map/InfoPanel';
 
 const OW_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
-const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY || '';
 
 // ── Mock dataset ──────────────────────────────────────────────
 export const PROJECTS = [
@@ -79,20 +78,17 @@ export function getRiskLevel(lat, lng) {
   return       { level: 'High',   color: '#FF3B30', reason: 'Remote location — supply chain & transport risk' };
 }
 
-// Reverse geocode using Google Geocoding REST API
+// Reverse geocode using Nominatim (OpenStreetMap) — free, no API key required
 async function reverseGeocode(lat, lng) {
   try {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}`
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=14`,
+      { headers: { 'Accept-Language': 'en' } }
     );
     const data = await res.json();
-    if (data.results?.length) {
-      const comp = data.results[0].address_components;
-      const locality = comp.find(c => c.types.includes('locality'))?.long_name;
-      const sublocality = comp.find(c => c.types.includes('sublocality'))?.long_name;
-      const area = comp.find(c => c.types.includes('administrative_area_level_2'))?.long_name;
-      return locality || sublocality || area || 'Unknown Area';
-    }
+    const addr = data.address || {};
+    return addr.suburb || addr.neighbourhood || addr.city_district || addr.city
+      || addr.town || addr.village || addr.county || 'Selected Area';
   } catch (_) {}
   return 'Selected Area';
 }

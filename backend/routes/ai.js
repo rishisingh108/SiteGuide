@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { requireApiKey } = require('../middleware/auth');
+const { validate, aiChatSchema } = require('../middleware/validate');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -9,12 +11,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
  * RAG-style chat: injects project context into the system prompt
  * Body: { prompt: string, context?: object (project data), history?: array }
  */
-router.post('/chat', async (req, res, next) => {
-  const { prompt, context, history = [] } = req.body;
-
-  if (!prompt || prompt.trim() === '') {
-    return res.status(400).json({ message: 'Prompt is required.' });
-  }
+router.post('/chat', requireApiKey, validate(aiChatSchema), async (req, res, next) => {
+  const { prompt, context, history } = req.body;
 
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
@@ -79,7 +77,7 @@ ${contextBlock}
  * POST /api/ai/analyze-project
  * Generate a full AI analysis report for a specific project
  */
-router.post('/analyze-project', async (req, res, next) => {
+router.post('/analyze-project', requireApiKey, async (req, res, next) => {
   const { project } = req.body;
 
   if (!project) {
@@ -87,7 +85,7 @@ router.post('/analyze-project', async (req, res, next) => {
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `
 You are a **Senior Project Intelligence Analyst** at SiteGuide. Provide a high-impact, professional analysis report for the project: **"${project.name}"**.

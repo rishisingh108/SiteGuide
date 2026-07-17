@@ -3,6 +3,7 @@
  * Modular JavaScript cost calculation (replaces inline logic)
  * Translates Python/Pandas numeric logic into clean JS
  */
+const { computeCriticalPath } = require('./scheduleEngine');
 
 // Base rates per sq ft by building type (in USD)
 const BASE_RATES = {
@@ -123,11 +124,14 @@ function getScheduleTemplate(buildingType) {
 
 /**
  * Estimate total timeline in days using critical path
+ * Accounts for parallel (non-dependent) tasks instead of naively summing durations
  * @param {Array} tasks
  * @returns {number} Total days
  */
 function estimateTotalDuration(tasks) {
-  return tasks.reduce((sum, t) => sum + t.duration, 0);
+  if (!tasks || tasks.length === 0) return 0;
+  const scheduled = computeCriticalPath(tasks, new Date());
+  return Math.max(...scheduled.map(t => t.earlyFinish));
 }
 
 module.exports = {

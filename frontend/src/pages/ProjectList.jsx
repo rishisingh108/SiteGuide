@@ -86,12 +86,14 @@ export default function ProjectList() {
           <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
           <p className="text-gray-500">Manage and analyze your construction sites.</p>
         </div>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-500/20"
         >
           <Plus className="w-5 h-5" /> New Project
-        </button>
+        </motion.button>
       </div>
 
       {error && (
@@ -118,7 +120,8 @@ export default function ProjectList() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition group overflow-hidden"
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-blue-500/5 transition-shadow group overflow-hidden"
             >
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
@@ -168,7 +171,9 @@ export default function ProjectList() {
               </div>
 
               <div className="border-t border-gray-50 px-6 py-3.5 flex justify-between items-center bg-[#FAFBFE] group-hover:bg-[#F4F7FF] transition-colors">
-                <button
+                <motion.button
+                  whileHover={{ x: 3 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => handleAIAnalysis(proj)}
                   disabled={isAnalyzing === proj._id}
                   className="flex items-center gap-2 text-sm font-bold text-purple-600 hover:text-purple-700 transition disabled:opacity-50"
@@ -177,13 +182,15 @@ export default function ProjectList() {
                     ? <Loader2 className="w-4 h-4 animate-spin" />
                     : <Bot className="w-4 h-4" />}
                   {isAnalyzing === proj._id ? 'Analyzing...' : 'Generate AI Report'}
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.15, rotate: -8 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => handleDelete(proj._id)}
                   className="p-2 text-gray-300 hover:text-red-500 transition rounded-xl hover:bg-red-50"
                 >
                   <Trash2 className="w-4 h-4" />
-                </button>
+                </motion.button>
               </div>
             </motion.div>
           ))}
@@ -201,12 +208,14 @@ export default function ProjectList() {
               className="bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-blue-500 to-indigo-600" />
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setIsModalOpen(false)} 
-                className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-2xl transition"
+                className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-2xl transition-colors"
               >
                 <X className="w-5 h-5" />
-              </button>
+              </motion.button>
               
               <h2 className="text-3xl font-black text-gray-900 mb-2">New Project</h2>
               <p className="text-gray-500 mb-8">Initialize your site parameters.</p>
@@ -243,9 +252,15 @@ export default function ProjectList() {
                     <option>Mixed</option>
                   </select>
                 </div>
-                <button type="submit" disabled={submitting} className="w-full py-4 mt-4 bg-gray-900 text-white font-black rounded-2xl hover:bg-blue-600 transition-all shadow-xl shadow-gray-900/20 active:scale-95 disabled:opacity-50">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full py-4 mt-4 bg-gray-900 text-white font-black rounded-2xl hover:bg-blue-600 transition-colors shadow-xl shadow-gray-900/20 disabled:opacity-50"
+                >
                    {submitting ? 'Initializing...' : 'Launch Project'}
-                </button>
+                </motion.button>
               </form>
             </motion.div>
           </div>
@@ -273,12 +288,14 @@ export default function ProjectList() {
                     <p className="text-sm font-bold text-purple-600 uppercase tracking-tighter">Project: {analysisResult.projectName}</p>
                   </div>
                 </div>
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setAnalysisResult(null)} 
-                  className="p-3 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-2xl transition-all"
+                  className="p-3 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-2xl transition-colors"
                 >
                   <X className="w-6 h-6" />
-                </button>
+                </motion.button>
               </div>
 
               {/* Analysis Content */}
@@ -317,21 +334,25 @@ export default function ProjectList() {
               <div className="p-6 bg-white border-t border-gray-50 flex justify-between items-center shrink-0">
                 <p className="text-xs font-bold text-gray-300 uppercase tracking-widest">SiteGuide AI Analysis Engine v2.0</p>
                 <div className="flex gap-3">
-                   <button 
+                   <motion.button 
+                     whileHover={{ scale: 1.04 }}
+                     whileTap={{ scale: 0.96 }}
                      onClick={() => {
                        navigator.clipboard.writeText(analysisResult.analysis);
                        alert('Analysis copied to clipboard!');
                      }}
-                     className="px-6 py-3 bg-gray-100 text-gray-600 text-sm font-black rounded-2xl hover:bg-gray-200 transition"
+                     className="px-6 py-3 bg-gray-100 text-gray-600 text-sm font-black rounded-2xl hover:bg-gray-200 transition-colors"
                    >
                      Copy Data
-                   </button>
-                   <button 
+                   </motion.button>
+                   <motion.button 
+                     whileHover={{ scale: 1.04 }}
+                     whileTap={{ scale: 0.96 }}
                      onClick={() => setAnalysisResult(null)}
-                     className="px-8 py-3 bg-gray-900 text-white text-sm font-black rounded-2xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/20"
+                     className="px-8 py-3 bg-gray-900 text-white text-sm font-black rounded-2xl hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
                    >
                      Archive Report
-                   </button>
+                   </motion.button>
                 </div>
               </div>
             </motion.div>
