@@ -124,6 +124,6 @@ Distributed under the ISC License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-**Rishi Singh Singh** - [GitHub](https://github.com/ThakurRishi Singh1706)
+**Rishi Singh Singh** - [GitHub](https://github.com/rishisingh108)
 
 Project Link: [https://github.com/ThakurRishi Singh1706/SiteGuide](https://github.com/ThakurRishi Singh1706/SiteGuide)
