@@ -39,7 +39,13 @@ An AI-driven construction management platform for project planning, cost estimat
 
 ---
 
-## 📸 Preview
+##
+
+https://github.com/user-attachments/assets/89577332-ca62-499c-a5af-65e495c4c935
+
+
+
+ 📸 Preview
 
 > _Add a screenshot or screen recording of the dashboard/AI Copilot here for extra impact._
 
