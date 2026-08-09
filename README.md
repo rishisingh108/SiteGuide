@@ -4,10 +4,13 @@
 
 ### Next-Gen AI-Powered Construction Management Platform
 
+![SiteGuide Preview](PASTE_YOUR_SCREENSHOT_OR_GIF_URL_HERE)
+
 An AI-driven construction management platform for project planning, cost estimation, and site monitoring — powered by Google Gemini.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-2496ED?style=for-the-badge&logo=vercel&logoColor=white)](https://site-guide-six.vercel.app/)
 [![Backend API](https://img.shields.io/badge/Backend%20API-Live-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://siteguide.onrender.com)
+[![GitHub stars](https://img.shields.io/github/stars/ThakurRishiSingh1706/SiteGuide?style=social)](https://github.com/ThakurRishiSingh1706/SiteGuide)
 
 </div>
 
@@ -26,6 +29,19 @@ An AI-driven construction management platform for project planning, cost estimat
 
 ---
 
+## 🧠 How It Works
+
+```
+User Query → Gemini API Processing → Database Context Retrieval → AI-Generated Construction Insight
+```
+
+1. User asks a question or selects a project for context (e.g. *"What are the main risks for a commercial project?"*)
+2. The query is sent to **Google Gemini** along with relevant project data pulled from MongoDB
+3. Gemini processes the request using construction-domain prompting for accurate, expert-level responses
+4. The AI-generated insight is returned and rendered instantly in the chat interface
+
+---
+
 ## 🛠️ Tech Stack
 
 **Frontend**
@@ -39,15 +55,21 @@ An AI-driven construction management platform for project planning, cost estimat
 
 ---
 
-##
+## 💡 Challenges & Solutions
 
-https://github.com/user-attachments/assets/89577332-ca62-499c-a5af-65e495c4c935
+| Challenge | Solution |
+|---|---|
+| Visualizing geospatial site data with multiple overlays (projects, suppliers, materials) without cluttering the UI | Used **Leaflet** with custom marker layers and a filterable legend, keeping the map performant and readable even with many active pins |
+| Rendering complex cost breakdowns and timelines without lag | Used **Recharts** and **Framer Motion** for smooth, animated data visualization that updates in real time as inputs change |
+| Keeping AI responses relevant to a specific project instead of generic answers | Built a context-injection layer that passes the selected project's data into the Gemini prompt, so the AI Copilot gives site-specific advice |
+| Backend cold-starts on free-tier hosting causing slow first response | Documented expected wake-up delay and structured API calls with proper loading states so the UI stays responsive during cold starts |
 
+---
 
+## 📸 Preview
 
- 📸 Preview
-
-> _Add a screenshot or screen recording of the dashboard/AI Copilot here for extra impact._
+**Demo Video**
+https://github.com/user-attachments/assets/PASTE_YOUR_VIDEO_ID_HERE
 
 ---
 
