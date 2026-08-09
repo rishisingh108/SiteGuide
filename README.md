@@ -1,3 +1,4 @@
+<img width="1902" height="910" alt="Screenshot 2026-08-09 175141" src="https://github.com/user-attachments/assets/c10c86ec-e7d0-4a6d-bc85-e03a5f1569d5" />
 <div align="center">
 
 # 🏗️ SiteGuide AI
