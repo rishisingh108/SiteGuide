@@ -192,4 +192,3 @@ Distributed under the ISC License. See `LICENSE` for more information.
 **Rishi Singh**
 [GitHub](https://github.com/rishisingh108) · [LinkedIn](https://www.linkedin.com/in/rishi-singh-064419333) · [rishisingh31102004@gmail.com](mailto:rishisingh31102004@gmail.com)
 
-Project Link: [github.com/ThakurRishiSingh1706/SiteGuide](https://github.com/ThakurRishiSingh1706/SiteGuide)
