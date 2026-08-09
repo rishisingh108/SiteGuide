@@ -69,6 +69,8 @@ User Query → Gemini API Processing → Database Context Retrieval → AI-Gener
 ## 📸 Preview
 
 **Demo Video**
+
+
 https://github.com/user-attachments/assets/9c35c637-f1b6-4254-b288-702b5e8feb8a
 
 
